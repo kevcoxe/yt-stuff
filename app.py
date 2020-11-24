@@ -9,7 +9,7 @@ yt_downloader = Downloader()
 @app.route('/', methods=['GET'])
 def index():
     info = Downloader.check_downloads()
-    return render_template('index.html', message=message, status=info['status'], downloads=info['list'])
+    return render_template('index.html', status=info['status'], downloads=info['list'])
 
 
 @app.route('/download', methods=['POST'])
