@@ -1,19 +1,17 @@
-<html>
-    <body>
-        <div>
-            <a href="/">back to add</a>
-            </br>
-            <h1>{{ status }}</h1>
+{% extends 'base.html' %}
+{% block main_content %}
+<div>
+    <a href="/">back to add</a>
+    </br>
+    <h1>{{ status }}</h1>
 
-            {% for download in downloads %}
-            </hr>
-            <div>
-                <h3>{{ download['title'] }}</h3>
-                </br>
-                <p>{{ download['status'] }}</p>
-            </div>
-            {% endfor %}
-        </div>
-    </body>
-</html>
-
+    {% for download in downloads %}
+    </hr>
+    <div>
+        <h3>{{ download['title'] }}</h3>
+        </br>
+        <p>{{ download['status'] }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

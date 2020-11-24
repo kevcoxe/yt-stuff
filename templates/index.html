@@ -1,25 +1,23 @@
-<html>
-    <body>
-        <div>
-            {{ message }}
-            </br>
-            <a href="/status">status page</a>
-            </br>
-            <form action="/download" method="post">
-                <label for="url">First name:</label><br>
-                <input type="text" id="url" name="url" value="" placeholder="Enter youtube URL"><br>
-                <input type="submit" value="Submit">
-            </form>
-            </br>
-            {% for download in downloads %}
-            </hr>
-            <div>
-                <h3>{{ download['title'] }}</h3>
-                </br>
-                <p>{{ download['status'] }}</p>
-            </div>
-            {% endfor %}
-        </div>
-    </body>
-</html>
-
+{% extends 'base.html' %}
+{% block main_content %}
+<div>
+    {{ message }}
+    </br>
+    <a href="/status">status page</a>
+    </br>
+    <form action="/download" method="post">
+        <label for="url">First name:</label><br>
+        <input type="text" id="url" name="url" value="" placeholder="Enter youtube URL"><br>
+        <input type="submit" value="Submit">
+    </form>
+    </br>
+    {% for download in downloads %}
+    </hr>
+    <div>
+        <h3>{{ download['title'] }}</h3>
+        </br>
+        <p>{{ download['status'] }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
