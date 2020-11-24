@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% block main_content %}
+
 <div>
-    {{ message }}
     </br>
     <a href="/status">status page</a>
     </br>
-    <form action="/download" method="post">
-        <label for="url">First name:</label><br>
-        <input type="text" id="url" name="url" value="" placeholder="Enter youtube URL"><br>
-        <input type="submit" value="Submit">
+    <form class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Enter a YouTube url</h1>
+        <label for="inputEmail" class="sr-only">YouTube url</label>
+        <input type="text" name="url" id="url" class="form-control" placeholder="YouTube url" required autofocus>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Add to queue</button>
     </form>
     </br>
     {% for download in downloads %}
