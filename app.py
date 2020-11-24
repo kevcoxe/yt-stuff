@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 
 from scripts.downloader import Downloader
 
@@ -9,7 +9,7 @@ yt_downloader = Downloader()
 @app.route('/', methods=['GET'])
 def index():
     info = Downloader.check_downloads()
-    return render_template('index.html', status=info['status'], downloads=info['list'])
+    return render_template('index.html', message=message, status=info['status'], downloads=info['list'])
 
 
 @app.route('/download', methods=['POST'])
@@ -20,8 +20,7 @@ def api_v1_download():
         return 'Invalid url', 400
 
     Downloader.add_url_to_queue(yt_url)
-    message = f'Successfully added to the queue'
-    return render_template('index.html', message=message)
+    return redirect(url_for('index'))
     
 @app.route('/status', methods=['GET'])
 def check_downloads():
