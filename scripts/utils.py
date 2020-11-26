@@ -21,3 +21,10 @@ def clean_filename(filename, whitelist=valid_filename_chars, replace=' '):
         print("Warning, filename truncated because it was over {}. Filenames may no longer be unique".format(char_limit))
     return cleaned_filename[:char_limit]    
 
+
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)

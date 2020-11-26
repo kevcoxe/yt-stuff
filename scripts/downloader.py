@@ -5,7 +5,7 @@ import math
 
 from pytube import YouTube, Playlist
 from scripts.upload import threaded_upload
-from scripts.utils import clean_filename
+from scripts.utils import clean_filename, sizeof_fmt
 
 DL_DOWNLOAD_PATH = os.environ['DL_DOWNLOAD_PATH']
 
@@ -63,10 +63,17 @@ class Downloader(threading.Thread):
             if finished_callback is not None:
                 yt.register_on_complete_callback(finished_callback)
 
+            high_res_stream = yt.streams.filter(
+                progressive=True,
+                file_extension='mp4'
+            ).order_by('resolution')[-1]
+
             Downloader.__yt_objs.append({
                 'stream': yt,
                 'title': yt.title,
-                'status': 'waiting'
+                'status': 'waiting',
+                'thumbnain_url': yt.thumbnail_url,
+                'file_size': sizeof_fmt(high_res_stream.filesize_approx)
             })
 
     @classmethod

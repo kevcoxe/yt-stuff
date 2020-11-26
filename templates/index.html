@@ -1,24 +1,36 @@
 {% extends 'base.html' %}
-{% block main_content %}
 
-<div>
-    </br>
-    <a href="/status">status page</a>
-    </br>
-    <form class="form-signin" action="/download" method="post">
-        <h1 class="h3 mb-3 font-weight-normal">Enter a YouTube url</h1>
-        <label for="inputEmail" class="sr-only">YouTube url</label>
-        <input type="text" name="url" id="url" class="form-control" placeholder="YouTube url" required autofocus>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Add to queue</button>
+{% block main_content %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">yt-to-plex</a>
+
+    <form class="form-inline my-2 my-lg-0" action="/download" method="post">
+        <input class="form-control mr-sm-2" type="text" name="url" id="url" placeholder="YouTube URL"
+            aria-label="YouTube URL">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Add to queue</button>
     </form>
-    </br>
-    {% for download in downloads %}
-    </hr>
-    <div>
-        <h3>{{ download['title'] }}</h3>
-        </br>
-        <p>{{ download['status'] }}</p>
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <div class="row row-cols-1 row-cols-md-3">
+            {% for download in downloads %}
+            <div class="col mb-4">
+            <div class="card">
+                <img src="{{ download['thumbnain_url'] }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">{{ download['title'] }}</h5>
+                <p class="card-text">status - {{ download['status'] }}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">filesize - {{ download['file_size'] }}</small>
+                </div>
+            </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-</div>
+
+</main><!-- /.container -->
 {% endblock %}
