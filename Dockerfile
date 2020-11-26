@@ -7,7 +7,7 @@ FROM base as dependencies
 RUN apt update -y
 RUN apt install sshpass git -y
 
-RUN git clone https://github.com/nficano/pytube.git /app/pytube
+RUN git clone https://github.com/kevcoxe/pytube.git /app/pytube
 
 COPY requirements.txt .
 
