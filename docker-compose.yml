@@ -1,9 +1,9 @@
 version: '3.7'
 services:
-  yt-downloader:
-    # image: kevcoxe/yt-downloader:latest
+  yt-to-plex:
+    # image: kevcoxe/yt-to-plex:latest
     build: .
-    container_name: 'yt-downloader'
+    container_name: 'yt-to-plex'
     ports:
       - "5000:5000"
     env_file:
