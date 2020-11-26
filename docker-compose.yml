@@ -1,10 +1,10 @@
 version: '3.7'
 services:
   yt-downloader:
+    # image: kevcoxe/yt-downloader:latest
     build: .
     container_name: 'yt-downloader'
     ports:
       - "5000:5000"
     env_file:
       - .env
-
