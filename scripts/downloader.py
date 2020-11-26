@@ -1,3 +1,4 @@
+import os
 import time
 import threading
 import math
@@ -6,7 +7,7 @@ from pytube import YouTube, Playlist
 from scripts.upload import threaded_upload
 from scripts.utils import clean_filename
 
-DOWNLOAD_OUTPUT_PATH = 'downloads'
+DL_DOWNLOAD_PATH = os.environ['DL_DOWNLOAD_PATH']
 
 
 def finish_callback(stream, filepath):
@@ -101,7 +102,7 @@ class Downloader(threading.Thread):
                     progressive=True,
                     file_extension='mp4'
                 ).order_by('resolution')[-1].download(
-                    output_path=DOWNLOAD_OUTPUT_PATH,
+                    output_path=DL_DOWNLOAD_PATH,
                     filename=safe_filename
                 )
 
