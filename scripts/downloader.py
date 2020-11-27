@@ -4,7 +4,7 @@ import threading
 import math
 
 from pytube import YouTube, Playlist
-from scripts.upload import threaded_upload
+from scripts.upload import Uploader
 from scripts.utils import clean_filename, sizeof_fmt
 
 DL_DOWNLOAD_PATH = os.environ['DL_DOWNLOAD_PATH']
@@ -14,9 +14,10 @@ def finish_callback(stream, filepath):
     print(f'Finished downloading: {filepath}')
 
 def progress_callback(stream, chunk, bytes_remaining):
-    filesize = stream.filesize
-    total_left = 100 - math.floor((bytes_remaining / filesize) * 100)
-    print(f'Downloading with remaining: {total_left}')
+    pass
+    # filesize = stream.filesize
+    # total_left = 100 - math.floor((bytes_remaining / filesize) * 100)
+    # print(f'Downloading with remaining: {total_left}')
 
 
 class Downloader(threading.Thread):
@@ -48,7 +49,7 @@ class Downloader(threading.Thread):
             Downloader.__stop_thread = True
 
     @classmethod
-    def add_url_to_queue(cls, yt_url, progress_callback=progress_callback, finished_callback=threaded_upload):
+    def add_url_to_queue(cls, yt_url, progress_callback=progress_callback, finished_callback=finish_callback):
         if 'index=' in yt_url:
             pl = Playlist(yt_url)
             yt_list = pl.videos
@@ -68,12 +69,19 @@ class Downloader(threading.Thread):
                 file_extension='mp4'
             ).order_by('resolution')[-1]
 
+            safe_filename = clean_filename(yt.title)
+            file_path = os.path.join(DL_DOWNLOAD_PATH, clean_filename(high_res_stream.default_filename))
+
+            print(f'Filepath: {file_path}')
+
             Downloader.__yt_objs.append({
                 'stream': yt,
                 'title': yt.title,
                 'status': 'waiting',
                 'thumbnain_url': yt.thumbnail_url,
-                'file_size': sizeof_fmt(high_res_stream.filesize_approx)
+                'file_size': sizeof_fmt(high_res_stream.filesize_approx),
+                'file_name': safe_filename,
+                'file_path': file_path
             })
 
     @classmethod
@@ -102,16 +110,18 @@ class Downloader(threading.Thread):
                 # update status so the check_downloads will show it
                 Downloader.__yt_objs[0]['status'] = 'downloading'
 
-                safe_filename = clean_filename(yt.title)
-
                 # download the object
                 download_path = yt.streams.filter(
                     progressive=True,
                     file_extension='mp4'
                 ).order_by('resolution')[-1].download(
                     output_path=DL_DOWNLOAD_PATH,
-                    filename=safe_filename
+                    filename=yt_obj['file_name']
                 )
+
+                yt_obj['status'] = 'ready to upload'
+
+                Uploader.add_to_queue(yt_obj)
 
                 # remove the obj at the end
                 del Downloader.__yt_objs[0]

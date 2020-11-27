@@ -1,16 +1,24 @@
 from flask import Flask, request, render_template, redirect, url_for
 
 from scripts.downloader import Downloader
+from scripts.upload import Uploader
 
 
 app = Flask(__name__)
 yt_downloader = Downloader()
+yt_uploader = Uploader()
 
 @app.route('/', methods=['GET'])
 def index():
-    info = Downloader.check_downloads()
-    return render_template('index.html', status=info['status'], downloads=info['list'])
+    download_info = Downloader.check_downloads()
+    upload_info = Uploader.check_upload()
 
+    return render_template('index.html',
+        download_status=download_info['status'],
+        downloads=download_info['list'],
+        upload_status=upload_info['status'],
+        uploads=upload_info['list']
+    )
 
 @app.route('/download', methods=['POST'])
 def api_v1_download():
@@ -24,6 +32,13 @@ def api_v1_download():
     
 @app.route('/status', methods=['GET'])
 def check_downloads():
-    info = Downloader.check_downloads()
-    return render_template('status.html', status=info['status'], downloads=info['list'])
+    download_info = Downloader.check_downloads()
+    upload_info = Uploader.check_upload()
+
+    return render_template('status.html',
+        download_status=download_info['status'],
+        downloads=download_info['list'],
+        upload_status=upload_info['status'],
+        uploads=upload_info['list']
+    )
 
