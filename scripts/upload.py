@@ -17,16 +17,10 @@ def remove(filepath):
 
 def upload(filepath):
     cmd = f'sshpass -p "{DL_SERVER_PASSWORD}" scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q {filepath} {DL_USERNAME}@{DL_SERVER}:{DL_SERVER_PATH}/.'
-    print(f'attemptint to run: {cmd}')
     if os.system(cmd) != 0:
         return False
 
     return remove(filepath)
-
-
-def finished_upload(filepath):
-    print(f'Finished uploading file: {filepath}')
-
 
 
 class Uploader(threading.Thread):
@@ -57,7 +51,7 @@ class Uploader(threading.Thread):
             Uploader.__stop_thread = True
 
     @classmethod
-    def add_to_queue(cls, yt_obj, finished_callback=finished_upload):
+    def add_to_queue(cls, yt_obj):
         if DL_USERNAME is not None and DL_SERVER is not None:
             Uploader.__upload_queue.append(yt_obj)
 

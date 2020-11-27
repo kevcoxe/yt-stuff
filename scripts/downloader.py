@@ -69,10 +69,19 @@ class Downloader(threading.Thread):
                 file_extension='mp4'
             ).order_by('resolution')[-1]
 
-            safe_filename = clean_filename(yt.title)
-            file_path = os.path.join(DL_DOWNLOAD_PATH, clean_filename(high_res_stream.default_filename))
+            # get the cleaned filename without extention YouTube adds it
+            safe_filename = clean_filename(
+                high_res_stream.default_filename,
+                remove_extention=True
+            )
 
-            print(f'Filepath: {file_path}')
+            # we need the filename with extention here
+            file_path = os.path.join(
+                DL_DOWNLOAD_PATH,
+                clean_filename(
+                    high_res_stream.default_filename
+                )
+            )
 
             Downloader.__yt_objs.append({
                 'stream': yt,
