@@ -58,7 +58,8 @@ class Uploader(threading.Thread):
 
     @classmethod
     def add_to_queue(cls, yt_obj, finished_callback=finished_upload):
-        Uploader.__upload_queue.append(yt_obj)
+        if DL_USERNAME is not None and DL_SERVER is not None:
+            Uploader.__upload_queue.append(yt_obj)
 
     @classmethod
     def check_upload(cls):

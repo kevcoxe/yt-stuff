@@ -17,6 +17,8 @@ DL_DOWNLOAD_PATH=       # place to download videos to (/app/downloads)
 DL_SERVER_PASSWORD=     # password to the plex server or where you save them
 DL_USERNAME=            # username for that server (with ssh access)
 DL_SERVER=              # server to scp files to
+                        # if DL_USERNAME or DL_SERVER are empty it will not upload the files to a server
+                        # this is useful if you run this on the same server as plex
 DL_SERVER_PATH=         # directory on the server to save the files
 
                         # not used yet
